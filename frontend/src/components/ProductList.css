@@ -1,0 +1,154 @@
+.shop-product-list-container {
+  padding: 20px 50px;
+  background-color: #fff;
+}
+
+/* Heading */
+h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Side-by-side Product Grid */
+.shop-product-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  justify-content: center;
+}
+
+/* Product Card */
+.shop-product-card {
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.shop-product-card:hover {
+  transform: scale(1.05);
+}
+
+/* Product Image */
+.shop-product-card img {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+  margin-bottom: 10px;
+}
+
+/* Product Name */
+.shop-product-card p {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Price Styling */
+.shop-price {
+  color: #e44d26;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Offers Section */
+.offers-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 30px 0;
+  overflow-x: auto;
+  padding: 10px;
+}
+
+.offer-image {
+  width: 450px;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.offer-image:hover {
+  transform: scale(1.05);
+}
+
+/* Flipkart Info Section */
+.flipkart-info {
+  background: #f8f8f8;
+  padding: 30px;
+  border-radius: 10px;
+  margin-top: 30px;
+}
+
+.flipkart-info h2,
+.flipkart-info h3 {
+  color: #2c3e50;
+  margin-bottom: 15px;
+}
+
+.flipkart-info p,
+.flipkart-info ul {
+  font-size: 16px;
+  color: #555;
+  line-height: 1.6;
+}
+
+.flipkart-info ul {
+  padding-left: 20px;
+}
+
+.flipkart-info ul li {
+  margin-bottom: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .shop-product-list {
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+  }
+
+  .shop-product-card img {
+      width: 120px;
+      height: 120px;
+  }
+
+  .shop-product-card p {
+      font-size: 14px;
+  }
+
+  .offer-image {
+      width: 250px;
+  }
+
+  .flipkart-info {
+      padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .shop-product-list {
+      grid-template-columns: repeat(2, minmax(120px, 1fr));
+  }
+
+  .shop-product-card img {
+      width: 100px;
+      height: 100px;
+  }
+
+  .shop-product-card p {
+      font-size: 12px;
+  }
+
+  .offer-image {
+      width: 200px;
+  }
+
+  .flipkart-info {
+      padding: 15px;
+  }
+}

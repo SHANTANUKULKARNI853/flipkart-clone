@@ -1,0 +1,94 @@
+.categories {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 25px;
+  padding: 20px 50px;
+  justify-items: center;
+  background-color: #f8f9fa; /* Light and fresh background */
+  border-radius: 10px; /* Smooth edges */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+}
+
+/* Category Card */
+.category-item {
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  padding: 12px;
+  border-radius: 10px;
+  background: linear-gradient(145deg, #ffffff, #e9ecef); /* Soft white gradient */
+  box-shadow: 5px 5px 10px #d1d1d1, -5px -5px 10px #ffffff; /* Light neumorphism effect */
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Category Image */
+.category-item img {
+  width: 140px;
+  height: 140px;
+  object-fit: contain;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  transition: transform 0.3s ease, filter 0.3s ease;
+  filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.1)); /* Soft shadow effect */
+}
+
+/* Category Text */
+.category-item p {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Hover Effects */
+.category-item:hover {
+  transform: scale(1.08);
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
+}
+
+.category-item:hover img {
+  transform: scale(1.1);
+  filter: brightness(1.1);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .categories {
+    grid-template-columns: repeat(4, minmax(120px, 1fr));
+    gap: 20px;
+  }
+
+  .category-item img {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+@media (max-width: 768px) {
+  .categories {
+    grid-template-columns: repeat(3, minmax(100px, 1fr));
+    gap: 15px;
+  }
+
+  .category-item img {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .categories {
+    grid-template-columns: repeat(2, minmax(90px, 1fr));
+    gap: 10px;
+  }
+
+  .category-item img {
+    width: 90px;
+    height: 90px;
+  }
+
+  .category-item p {
+    font-size: 14px;
+  }
+}

@@ -1,0 +1,86 @@
+/* Navbar Styling */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 60px;
+    background-color: #2874f0;
+    color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Flipkart Logo */
+  .logo {
+    font-size: 35px;
+    font-weight: bold;
+    color: rgb(254, 252, 252);
+  }
+  
+  .explore-plus {
+    font-size: 22px;
+    color: #ffe500;
+  }
+  
+  .plus {
+    color: #fff;
+  }
+  
+  /* Search Bar */
+  .navbar-search {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    background-color: white;
+    padding: 8px;
+    border-radius: 4px;
+    max-width: 600px;
+  }
+  
+  .navbar-search input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    padding: 5px;
+  }
+  
+  .search-icon {
+    color: gray;
+    cursor: pointer;
+  }
+  
+  /* Right Section */
+  .navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: white;
+    font-size: 16px;
+    text-decoration: none;
+    transition: 0.3s;
+    font-size: 20px;
+  }
+  
+  .nav-item:hover {
+    color: #ffe500;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .navbar {
+      flex-direction: column;
+      padding: 10px;
+    }
+    
+    .navbar-search {
+      width: 100%;
+      margin: 10px 0;
+    }
+  }
+  
