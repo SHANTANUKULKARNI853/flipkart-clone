@@ -4,7 +4,6 @@ import { FaSearch, FaShoppingCart, FaUser } from "react-icons/fa";
 import axios from "axios";
 import "./Navbar.css";
 
-
 const Navbar = () => {
   const [cartCount, setCartCount] = useState(0);
   const [searchQuery, setSearchQuery] = useState(""); // 🔹 Track search input
@@ -21,7 +20,8 @@ const Navbar = () => {
       }
 
       try {
-        const response = await axios.get(`http://localhost:5000/api/cart/${userId}`);
+        const apiUrl = process.env.REACT_APP_API_URL; // Get the backend URL from .env
+        const response = await axios.get(`${apiUrl}/api/cart/${userId}`);
         setCartCount(response.data.length || 0); // Fix: Access `response.data.length`
       } catch (error) {
         console.error("❌ Error fetching cart count:", error.response?.data || error.message);
@@ -42,21 +42,21 @@ const Navbar = () => {
 
   // 🔹 Handle Search
   const handleSearch = () => {
-  if (!searchQuery.trim()) return;
+    if (!searchQuery.trim()) return;
 
-  axios.get(`http://localhost:5000/api/products?name=${searchQuery}`)
-    .then((response) => {
-      const products = response.data;
+    const apiUrl = process.env.REACT_APP_API_URL; // Get the backend URL from .env
+    axios.get(`${apiUrl}/api/products?name=${searchQuery}`)
+      .then((response) => {
+        const products = response.data;
 
-      if (products.length > 0) {
-        navigate(`/category/${products[0].category}`);
-      } else {
-        alert("Couldn't find product!");
-      }
-    })
-    .catch((error) => console.error("❌ Error fetching products:", error));
-};
-
+        if (products.length > 0) {
+          navigate(`/category/${products[0].category}`);
+        } else {
+          alert("Couldn't find product!");
+        }
+      })
+      .catch((error) => console.error("❌ Error fetching products:", error));
+  };
 
   return (
     <nav className="navbar">
@@ -97,8 +97,6 @@ const Navbar = () => {
           {/* {cartCount > 0 && <span className="cart-count">{cartCount}</span>} */}
         </Link>
       </div>
-      
-
     </nav>
   );
 };
