@@ -21,8 +21,7 @@ const Navbar = () => {
       }
 
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}
-/api/cart/${userId}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/cart/${userId}`);
         setCartCount(response.data.length || 0); // Fix: Access `response.data.length`
       } catch (error) {
         console.error("❌ Error fetching cart count:", error.response?.data || error.message);
@@ -45,8 +44,7 @@ const Navbar = () => {
   const handleSearch = () => {
   if (!searchQuery.trim()) return;
 
-  axios.get(`${process.env.REACT_APP_API_URL}
-/api/products?name=${searchQuery}`)
+  axios.get(`${process.env.REACT_APP_API_URL}/api/products?name=${searchQuery}`)
     .then((response) => {
       const products = response.data;
 
