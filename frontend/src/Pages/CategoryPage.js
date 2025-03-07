@@ -2,20 +2,22 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import "./CategoryPage.css";
-import jwtDecode from "jwt-decode"; // ✅ Corrected import
+import jwtDecode from "jwt-decode"; 
 
 const CategoryPage = () => {
   const { category } = useParams();
+  const API_URL = process.env.REACT_APP_API_URL || "https://your-backend-url.com"; 
   const [products, setProducts] = useState([]);
-  const API_URL = process.env.REACT_APP_API_URL || "https://your-default-backend.com"; // ✅ Added fallback URL
 
   useEffect(() => {
     if (!category) return;
 
     const fetchProducts = async () => {
       try {
-        console.log(`🔹 Fetching products from: ${API_URL}/api/products?category=${category}`);
-        const response = await axios.get(`${API_URL}/api/products?category=${category}`);
+        const endpoint = `${API_URL}/api/products?category=${category}`;
+        console.log(`🔹 Fetching products from: ${endpoint}`);
+        
+        const response = await axios.get(endpoint);
         setProducts(response.data);
       } catch (error) {
         console.error("❌ Error fetching products:", error);
@@ -28,7 +30,7 @@ const CategoryPage = () => {
   const handleImageError = (e) => {
     if (!e.target.dataset.error) {
       e.target.dataset.error = true;
-      e.target.src = "https://via.placeholder.com/150"; // ✅ Prevents infinite retries
+      e.target.src = "https://via.placeholder.com/150";
     }
   };
 
@@ -45,10 +47,10 @@ const CategoryPage = () => {
         alert("❌ User not logged in!");
         return;
       }
-      
+
       const decodedToken = jwtDecode(token);
       const userId = decodedToken.userId;
-      
+
       const requestBody = {
         userId,
         productId: product._id,
@@ -57,11 +59,13 @@ const CategoryPage = () => {
         image: product.image,
         quantity: 1,
       };
-      
-      console.log(`🔹 Sending request to: ${API_URL}/api/cart`);
+
+      const endpoint = `${API_URL}/api/cart`;
+      console.log(`🔹 Sending request to: ${endpoint}`);
       console.log("📦 Request Body:", requestBody);
-      
-      const response = await axios.post(`${API_URL}/api/cart`, requestBody);
+
+      const response = await axios.post(endpoint, requestBody, { withCredentials: true });
+
       console.log("✅ Server Response:", response.data);
       alert("✅ Product added to cart!");
     } catch (error) {
