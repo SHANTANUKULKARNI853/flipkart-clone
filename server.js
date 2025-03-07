@@ -9,7 +9,11 @@ const { auth, isAdmin } = require('./middleware/auth');
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: ["https://flipkart-clone.vercel.app"], // Allow only your frontend
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true,
+}));
 
 const User = require('./models/User');
 const Product = require('./models/Product');
