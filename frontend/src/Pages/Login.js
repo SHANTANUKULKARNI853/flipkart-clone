@@ -10,23 +10,33 @@ const Login = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000"; // Default for local dev
+
+  const fetchJSON = async (response) => {
+    const contentType = response.headers.get("content-type");
+    if (contentType && contentType.includes("application/json")) {
+      return await response.json();
+    }
+    return null; // If no JSON response
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/login`, {
+      const response = await fetch(`${API_URL}/api/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
 
+      const data = await fetchJSON(response);
+
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Login failed");
+        throw new Error(data?.error || "Login failed. Please try again.");
       }
 
-      const data = await response.json();
       console.log("🔍 Login Response:", data);
 
       localStorage.setItem("token", data.token);
@@ -45,22 +55,22 @@ const Login = () => {
     setError("");
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/signup`, {
+      const response = await fetch(`${API_URL}/api/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),
       });
 
+      const data = await fetchJSON(response);
+
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Signup failed");
+        throw new Error(data?.error || "Signup failed. Please try again.");
       }
 
-      const data = await response.json();
       console.log("📢 Signup Response:", data);
 
-      if (!data.user || !data.user._id) {
-        throw new Error("User ID not found in response");
+      if (!data?.user || !data.user._id) {
+        throw new Error("User ID not found in response.");
       }
 
       console.log("✅ Signup Success - User ID:", data.user._id);
