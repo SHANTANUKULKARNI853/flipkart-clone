@@ -1,6 +1,8 @@
+
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./LoginPage.css";
+
 
 const Login = () => {
   const [isFlipped, setIsFlipped] = useState(false);
@@ -11,6 +13,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000"; // Default for local dev
+  console.log("🔍 ENV API URL:", API_URL);
 
   const fetchJSON = async (response) => {
     const contentType = response.headers.get("content-type");
