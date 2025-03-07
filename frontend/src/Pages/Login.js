@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./LoginPage.css";
-import axios from "axios";
-
 
 const Login = () => {
   const [isFlipped, setIsFlipped] = useState(false);
@@ -12,57 +10,64 @@ const Login = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  // 🚀 Handle Login
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
 
     try {
-      const response = await fetch("${process.env.REACT_APP_API_URL}/api/login", {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
 
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Login Failed: ${errorText}`);
+      }
+
       const data = await response.json();
       console.log("🔍 Login Response:", data);
-
-      if (!response.ok) throw new Error(data.error);
 
       localStorage.setItem("token", data.token);
       localStorage.setItem("userId", data.user._id);
 
       navigate("/");
       window.location.reload();
-    }
-       catch (error) {
+    } catch (error) {
       console.error("❌ Login Error:", error);
       setError(error.message);
     }
   };
 
-  const handleSignup = async () => {
+  // 🚀 Handle Signup
+  const handleSignup = async (e) => {
+    e.preventDefault(); // Prevent page refresh
+    setError("");
+
     try {
-      const response = await fetch("${process.env.REACT_APP_API_URL}/api/signup", {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),
       });
-  
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Signup Failed: ${errorText}`);
+      }
+
       const data = await response.json();
       console.log("📢 Signup Response:", data);
-  
-      if (!data.user || !data.user._id) {
-        throw new Error("User ID not found in response");
-      }
-  
-      console.log("✅ Signup Success - User ID:", data.user._id);
+
+      alert("✅ Signup successful! Please login.");
+      setIsFlipped(false); // Flip back to login form
     } catch (error) {
       console.error("❌ Signup Error:", error);
+      setError(error.message);
     }
   };
-  
-
-
 
   return (
     <div className="login-page">
