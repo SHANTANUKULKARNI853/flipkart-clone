@@ -4,18 +4,17 @@ import axios from "axios";
 import "./CategoryPage.css";
 import { jwtDecode } from "jwt-decode";
 
-
 const CategoryPage = () => {
   const { category } = useParams();
   const [products, setProducts] = useState([]);
+  const API_URL = process.env.REACT_APP_API_URL; // Store API base URL
 
   useEffect(() => {
     if (!category) return;
 
     const fetchProducts = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}
-/api/products?category=${category}`);
+        const response = await axios.get(`${API_URL}/api/products?category=${category}`);
         setProducts(response.data);
       } catch (error) {
         console.error("❌ Error fetching products:", error);
@@ -23,7 +22,7 @@ const CategoryPage = () => {
     };
 
     fetchProducts();
-  }, [category]);
+  }, [category, API_URL]);
 
   const handleImageError = (e) => {
     if (!e.target.dataset.error) {
@@ -58,14 +57,13 @@ const CategoryPage = () => {
         quantity: 1,  // Ensure quantity is included
       };
   
-      await axios.post("${process.env.REACT_APP_API_URL}/api/cart", requestBody);
+      await axios.post(`${API_URL}/api/cart`, requestBody);
       alert("✅ Product added to cart!");
     } catch (error) {
       console.error("❌ Error adding to cart:", error.response?.data || error);
       alert("❌ Failed to add product to cart. Try again.");
     }
   };
-  
 
   return (
     <div className="category-page">
@@ -81,14 +79,12 @@ const CategoryPage = () => {
 
               return (
                 <div key={product._id} className="product-card">
-                  {/* Product Image */}
                   <img
                     src={product.image || "https://via.placeholder.com/150"}
                     alt={product.name}
                     onError={handleImageError}
                   />
 
-                  {/* Product Info */}
                   <div className="product-info">
                     <h3>
                       {product.name}
@@ -113,7 +109,6 @@ const CategoryPage = () => {
                     <p className="delivery">Or fastest delivery <b>{getDeliveryDate(1)}</b></p>
                     <p className="service">Service: Installation</p>
 
-                    {/* Add to Cart Button */}
                     <button onClick={() => handleAddToCart(product)} className="add-to-cart">
                       Add to Cart
                     </button>
