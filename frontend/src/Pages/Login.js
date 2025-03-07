@@ -10,7 +10,6 @@ const Login = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  // 🚀 Handle Login
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
@@ -23,8 +22,8 @@ const Login = () => {
       });
 
       if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Login Failed: ${errorText}`);
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Login failed");
       }
 
       const data = await response.json();
@@ -41,9 +40,8 @@ const Login = () => {
     }
   };
 
-  // 🚀 Handle Signup
   const handleSignup = async (e) => {
-    e.preventDefault(); // Prevent page refresh
+    e.preventDefault();
     setError("");
 
     try {
@@ -54,15 +52,18 @@ const Login = () => {
       });
 
       if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Signup Failed: ${errorText}`);
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Signup failed");
       }
 
       const data = await response.json();
       console.log("📢 Signup Response:", data);
 
-      alert("✅ Signup successful! Please login.");
-      setIsFlipped(false); // Flip back to login form
+      if (!data.user || !data.user._id) {
+        throw new Error("User ID not found in response");
+      }
+
+      console.log("✅ Signup Success - User ID:", data.user._id);
     } catch (error) {
       console.error("❌ Signup Error:", error);
       setError(error.message);
@@ -75,10 +76,7 @@ const Login = () => {
         {/* Left Info Section */}
         <div className="login-left">
           <h2>Welcome to Our Platform</h2>
-          <p>
-            Join us to explore amazing features. <br />
-            Login or sign up to get started!
-          </p>
+          <p>Join us to explore amazing features. <br /> Login or sign up to get started!</p>
         </div>
 
         {/* Right Flipping Form Section */}
