@@ -47,10 +47,10 @@ const CategoryPage = () => {
         alert("❌ User not logged in!");
         return;
       }
-
+  
       const decodedToken = jwtDecode(token);
       const userId = decodedToken.userId;
-
+  
       const requestBody = {
         userId,
         productId: product._id,
@@ -59,13 +59,12 @@ const CategoryPage = () => {
         image: product.image,
         quantity: 1,
       };
-
-      const endpoint = `${API_URL}/api/cart`;
-      console.log(`🔹 Sending request to: ${endpoint}`);
+  
+      const apiUrl = `${API_URL}/api/cart`;
+      console.log(`🔹 Sending request to: ${apiUrl}`);
       console.log("📦 Request Body:", requestBody);
-
-      const response = await axios.post(endpoint, requestBody, { withCredentials: true });
-
+  
+      const response = await axios.post(apiUrl, requestBody);
       console.log("✅ Server Response:", response.data);
       alert("✅ Product added to cart!");
     } catch (error) {
@@ -73,7 +72,7 @@ const CategoryPage = () => {
       alert("❌ Failed to add product to cart. Try again.");
     }
   };
-
+  
   return (
     <div className="category-page">
       <div className="products">
