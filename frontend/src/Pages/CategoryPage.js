@@ -2,18 +2,20 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import "./CategoryPage.css";
-import { jwtDecode } from "jwt-decode";
+import jwtDecode from "jwt-decode"; // ✅ Fixed import
 
 const CategoryPage = () => {
   const { category } = useParams();
+  const API_URL = process.env.REACT_APP_API_URL || "https://your-default-backend.com"; // ✅ Fallback for missing API URL
+
   const [products, setProducts] = useState([]);
-  const API_URL = process.env.REACT_APP_API_URL; // Store API base URL
 
   useEffect(() => {
     if (!category) return;
 
     const fetchProducts = async () => {
       try {
+        console.log("🔹 Fetching products from:", `${API_URL}/api/products?category=${category}`);
         const response = await axios.get(`${API_URL}/api/products?category=${category}`);
         setProducts(response.data);
       } catch (error) {
@@ -27,7 +29,7 @@ const CategoryPage = () => {
   const handleImageError = (e) => {
     if (!e.target.dataset.error) {
       e.target.dataset.error = true;
-      e.target.src = "https://via.placeholder.com/150";
+      e.target.src = "https://via.placeholder.com/150"; // ✅ Prevents infinite retries
     }
   };
 
@@ -44,20 +46,20 @@ const CategoryPage = () => {
         alert("❌ User not logged in!");
         return;
       }
-  
+
       const decodedToken = jwtDecode(token);
       const userId = decodedToken.userId;
-  
+
       const requestBody = {
         userId,
         productId: product._id,
-        name: product.name,
-        price: product.price,
-        image: product.image,
-        quantity: 1,  // Ensure quantity is included
-      };
-  
-      await axios.post(`${API_URL}/api/cart`, requestBody);
+      }; // ✅ Only sending required fields
+
+      console.log("🔹 Sending request to:", `${API_URL}/api/cart`);
+      console.log("📦 Request Body:", requestBody);
+
+      const response = await axios.post(`${API_URL}/api/cart`, requestBody);
+      console.log("✅ Server Response:", response.data);
       alert("✅ Product added to cart!");
     } catch (error) {
       console.error("❌ Error adding to cart:", error.response?.data || error);
@@ -100,8 +102,7 @@ const CategoryPage = () => {
                     <p className="bought-info">300+ bought in past month</p>
 
                     <p className="price">
-                      ₹{product.price}{" "}
-                      <span className="mrp">M.R.P: ₹{defaultMRP}</span>{" "}
+                      ₹{product.price} <span className="mrp">M.R.P: ₹{defaultMRP}</span>{" "}
                       <span className="discount">({discount}% Off)</span>
                     </p>
 
