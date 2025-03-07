@@ -10,10 +10,22 @@ const { auth, isAdmin } = require('./middleware/auth');
 const app = express();
 app.use(express.json());
 app.use(cors({
-  origin: ["https://flipkart-clone.vercel.app"], // Allow only your frontend
+  origin: [
+    "https://flipkart-clone.vercel.app",
+    "https://flipkart-clone-git-main-shantanukulkarni853-gmailcoms-projects.vercel.app"
+  ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 }));
+
+// 🔹 Explicitly set CORS headers for all responses
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");  // Allow all origins (for testing)
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  next();
+});
+
 
 const User = require('./models/User');
 const Product = require('./models/Product');
