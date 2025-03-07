@@ -9,7 +9,8 @@ const WishlistPage = () => {
   useEffect(() => {
     const fetchWishlist = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/wishlist/${userId}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}
+/api/wishlist/${userId}`);
         setWishlist(response.data);
       } catch (error) {
         console.error("Error fetching wishlist:", error);

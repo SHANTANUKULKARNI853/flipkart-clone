@@ -1,8 +1,10 @@
-const BASE_URL = "http://localhost:5000"; // Update with deployed URL if needed
+const BASE_URL = "${process.env.REACT_APP_API_URL}"
+; 
 
 export const fetchProducts = async (category) => {
   try {
-    const response = await fetch(`http://localhost:5000/api/products?category=${category}`);
+    const response = await fetch(`${process.env.REACT_APP_API_URL}
+/api/products?category=${category}`);
     const data = await response.json();
     return data;
   } catch (error) {

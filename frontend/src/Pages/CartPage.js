@@ -24,7 +24,8 @@ const CartPage = () => {
         return;
       }
 
-      const response = await axios.get(`http://localhost:5000/api/cart/${userId}`);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}
+/api/cart/${userId}`);
 
       console.log("🛒 API Response:", response.data);
 
@@ -71,7 +72,7 @@ const CartPage = () => {
       }
 
       const response = await axios.post(
-        "http://localhost:5000/api/cart/remove",
+        "${process.env.REACT_APP_API_URL}/api/cart/remove",
         { userId, productId },
         { headers: { "Content-Type": "application/json" } }
       );
@@ -95,7 +96,9 @@ const CartPage = () => {
 
       const { userId } = jwtDecode(token);
 
-      const response = await axios.put("http://localhost:5000/api/cart/update", {
+      const response = await axios.put("${process.env.REACT_APP_API_URL}/api/cart/update"
+,
+ {
         userId,
         productId,
         quantity: newQuantity,

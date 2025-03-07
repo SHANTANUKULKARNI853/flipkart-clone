@@ -17,7 +17,7 @@ const Login = () => {
     setError("");
 
     try {
-      const response = await fetch("http://localhost:5000/api/login", {
+      const response = await fetch("${process.env.REACT_APP_API_URL}/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -33,7 +33,8 @@ const Login = () => {
 
       navigate("/");
       window.location.reload();
-    } catch (error) {
+    }
+       catch (error) {
       console.error("❌ Login Error:", error);
       setError(error.message);
     }
@@ -41,7 +42,7 @@ const Login = () => {
 
   const handleSignup = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/signup", {
+      const response = await fetch("${process.env.REACT_APP_API_URL}/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),

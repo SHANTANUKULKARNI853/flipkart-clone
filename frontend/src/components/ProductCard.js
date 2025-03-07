@@ -14,7 +14,8 @@ const ProductCard = ({ product }) => {
 
     try {
       const endpoint = wishlist ? "/remove" : "/add";
-      await axios.post(`http://localhost:5000/api/wishlist${endpoint}`, { userId, productId: product._id });
+      await axios.post(`${process.env.REACT_APP_API_URL}
+/api/wishlist${endpoint}`, { userId, productId: product._id });
       setWishlist(!wishlist);
     } catch (error) {
       console.error("Error updating wishlist:", error);

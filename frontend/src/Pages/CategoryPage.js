@@ -11,16 +11,17 @@ const CategoryPage = () => {
 
   useEffect(() => {
     if (!category) return;
-  
+
     const fetchProducts = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/products?category=${category}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}
+/api/products?category=${category}`);
         setProducts(response.data);
       } catch (error) {
         console.error("❌ Error fetching products:", error);
       }
     };
-  
+
     fetchProducts();
   }, [category]);
 
@@ -57,7 +58,7 @@ const CategoryPage = () => {
         quantity: 1,  // Ensure quantity is included
       };
   
-      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/cart`, requestBody);
+      await axios.post("${process.env.REACT_APP_API_URL}/api/cart", requestBody);
       alert("✅ Product added to cart!");
     } catch (error) {
       console.error("❌ Error adding to cart:", error.response?.data || error);
