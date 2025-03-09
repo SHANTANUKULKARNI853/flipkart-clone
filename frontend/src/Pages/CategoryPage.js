@@ -51,6 +51,12 @@ const CategoryPage = () => {
       const decodedToken = jwtDecode(token);
       const userId = decodedToken.userId;
   
+      if (!API_URL) {
+        console.error("❌ API_URL is not defined. Check your environment variables.");
+        alert("❌ Unable to add to cart. API URL is missing.");
+        return;
+      }
+  
       const requestBody = {
         userId,
         productId: product._id,
@@ -61,17 +67,34 @@ const CategoryPage = () => {
       };
   
       const apiUrl = `${API_URL}/api/cart`;
-      console.log(`🔹 Sending request to: ${apiUrl}`);
+      console.log(`🔹 Sending POST request to: ${apiUrl}`);
       console.log("📦 Request Body:", requestBody);
   
-      const response = await axios.post(apiUrl, requestBody);
+      const response = await axios.post(apiUrl, requestBody, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+  
       console.log("✅ Server Response:", response.data);
       alert("✅ Product added to cart!");
     } catch (error) {
       console.error("❌ Error adding to cart:", error.response?.data || error);
-      alert("❌ Failed to add product to cart. Try again.");
+  
+      if (error.response) {
+        if (error.response.status === 405) {
+          alert("❌ Method Not Allowed: Make sure your backend supports POST requests to /api/cart.");
+        } else if (error.response.status === 500) {
+          alert("❌ Internal Server Error: Please try again later.");
+        } else {
+          alert(`❌ Failed to add product to cart. Server responded with status ${error.response.status}.`);
+        }
+      } else {
+        alert("❌ Failed to add product to cart. Check your network connection.");
+      }
     }
   };
+  
   
   return (
     <div className="category-page">
