@@ -15,16 +15,14 @@ app.use(cors({
     "https://flipkart-clone-git-main-shantanukulkarni853-gmailcoms-projects.vercel.app"
   ],
   methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
 }));
 
-// 🔹 Explicitly set CORS headers for all responses
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");  // Allow all origins (for testing)
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  next();
-});
+// ✅ Handle Preflight Requests
+app.options("*", cors());
+
+
 
 
 const User = require('./models/User');

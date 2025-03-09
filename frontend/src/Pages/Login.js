@@ -1,8 +1,6 @@
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./LoginPage.css";
-
 
 const Login = () => {
   const [isFlipped, setIsFlipped] = useState(false);
@@ -12,15 +10,20 @@ const Login = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000"; // Default for local dev
+  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
   console.log("🔍 ENV API URL:", API_URL);
 
   const fetchJSON = async (response) => {
     const contentType = response.headers.get("content-type");
-    if (contentType && contentType.includes("application/json")) {
-      return await response.json();
-    }
-    return null; // If no JSON response
+    return contentType?.includes("application/json") ? response.json() : null;
+  };
+
+  const handleFlip = (isSignup) => {
+    setIsFlipped(isSignup);
+    setEmail("");
+    setPassword("");
+    setName("");
+    setError("");
   };
 
   const handleLogin = async (e) => {
@@ -35,13 +38,9 @@ const Login = () => {
       });
 
       const data = await fetchJSON(response);
-
-      if (!response.ok) {
-        throw new Error(data?.error || "Login failed. Please try again.");
-      }
+      if (!response.ok) throw new Error(data?.error || "Login failed. Please try again.");
 
       console.log("🔍 Login Response:", data);
-
       localStorage.setItem("token", data.token);
       localStorage.setItem("userId", data.user._id);
 
@@ -57,6 +56,11 @@ const Login = () => {
     e.preventDefault();
     setError("");
 
+    if (!name.trim()) {
+      setError("Name is required.");
+      return;
+    }
+
     try {
       const response = await fetch(`${API_URL}/api/signup`, {
         method: "POST",
@@ -65,10 +69,7 @@ const Login = () => {
       });
 
       const data = await fetchJSON(response);
-
-      if (!response.ok) {
-        throw new Error(data?.error || "Signup failed. Please try again.");
-      }
+      if (!response.ok) throw new Error(data?.error || "Signup failed. Please try again.");
 
       console.log("📢 Signup Response:", data);
 
@@ -77,6 +78,7 @@ const Login = () => {
       }
 
       console.log("✅ Signup Success - User ID:", data.user._id);
+      setTimeout(() => handleFlip(false), 1000); // Flip back to login
     } catch (error) {
       console.error("❌ Signup Error:", error);
       setError(error.message);
@@ -86,16 +88,13 @@ const Login = () => {
   return (
     <div className="login-page">
       <div className="login-container">
-        {/* Left Info Section */}
         <div className="login-left">
           <h2>Welcome to Our Platform</h2>
-          <p>Join us to explore amazing features. <br /> Login or sign up to get started!</p>
+          <p>Join us to explore amazing features.<br />Login or sign up to get started!</p>
         </div>
 
-        {/* Right Flipping Form Section */}
         <div className="login-right">
           <div className={`flip-card ${isFlipped ? "flipped" : ""}`}>
-            {/* Login Form */}
             <div className="flip-card-front">
               <h2>User Login</h2>
               {error && <p className="error-message">{error}</p>}
@@ -122,12 +121,11 @@ const Login = () => {
                 </div>
                 <button type="submit">Login</button>
               </form>
-              <p className="switch-form" onClick={() => setIsFlipped(true)}>
+              <p className="switch-form" onClick={() => handleFlip(true)}>
                 Don't have an account? Sign Up
               </p>
             </div>
 
-            {/* Signup Form */}
             <div className="flip-card-back">
               <h2>Sign Up</h2>
               {error && <p className="error-message">{error}</p>}
@@ -155,7 +153,7 @@ const Login = () => {
                 />
                 <button type="submit">Sign Up</button>
               </form>
-              <p className="switch-form" onClick={() => setIsFlipped(false)}>
+              <p className="switch-form" onClick={() => handleFlip(false)}>
                 Already have an account? Login
               </p>
             </div>
