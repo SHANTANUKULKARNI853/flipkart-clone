@@ -16,31 +16,36 @@ const CartPage = () => {
         console.error("❌ No token found!");
         return;
       }
-
+  
       const decodedToken = jwtDecode(token);
       const userId = decodedToken?.userId;
       if (!userId) {
         console.error("❌ No userId found in token!");
         return;
       }
-
-      // ✅ Corrected API call
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/cart/${userId}`);
-
-      console.log("🛒 API Response:", response.data);
-
+  
+      const apiUrl = `https://flipkart-clone-iq8c.onrender.com/api/cart/${userId}`;
+      console.log(`🔍 Fetching cart from: ${apiUrl}`);
+  
+      const response = await axios.get(apiUrl, {
+        headers: { "Content-Type": "application/json" },
+      });
+  
+      console.log("🛒 Raw API Response:", response);
+      console.log("📦 API Data:", response.data);
+  
       if (Array.isArray(response.data)) {
+        console.log("✅ Setting cart items:", response.data);
         setCartItems(response.data);
-      } else if (response.data.cart && Array.isArray(response.data.cart.products)) {
-        setCartItems(response.data.cart.products);
       } else {
         console.warn("⚠️ Unexpected response format:", response.data);
-        setCartItems([]);
+        setCartItems([]); // Set empty array to avoid frontend crashing
       }
     } catch (error) {
       console.error("❌ Error fetching cart items:", error.response?.data || error.message);
     }
   };
+  
 
   // 📌 Fetch cart items on component mount
   useEffect(() => {
