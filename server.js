@@ -166,6 +166,7 @@ app.post('/api/cart/checkout', async (req, res) => {
 app.get("/api/cart/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
+    console.log(`📥 Fetching cart for user: ${userId}`);
 
     const cart = await Cart.findOne({ userId });
 
@@ -173,11 +174,14 @@ app.get("/api/cart/:userId", async (req, res) => {
       return res.status(404).json({ message: "Cart not found" });
     }
 
-    res.json(cart.products); // Send only the products array
+    res.setHeader("Content-Type", "application/json"); // ✅ Ensure JSON response
+    res.json(cart.products);
   } catch (error) {
+    console.error("❌ Error fetching cart:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
 
 app.post("/api/cart/remove", async (req, res) => {
   try {
