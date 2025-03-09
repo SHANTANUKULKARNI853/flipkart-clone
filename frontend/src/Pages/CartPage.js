@@ -16,19 +16,19 @@ const CartPage = () => {
         console.error("❌ No token found!");
         return;
       }
-  
+
       const decodedToken = jwtDecode(token);
       const userId = decodedToken?.userId;
       if (!userId) {
         console.error("❌ No userId found in token!");
         return;
       }
-  
-      // ✅ Corrected string interpolation
+
+      // ✅ Corrected API call
       const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/cart/${userId}`);
-  
+
       console.log("🛒 API Response:", response.data);
-  
+
       if (Array.isArray(response.data)) {
         setCartItems(response.data);
       } else if (response.data.cart && Array.isArray(response.data.cart.products)) {
@@ -41,8 +41,7 @@ const CartPage = () => {
       console.error("❌ Error fetching cart items:", error.response?.data || error.message);
     }
   };
-  
-  
+
   // 📌 Fetch cart items on component mount
   useEffect(() => {
     fetchCartItems();
@@ -71,8 +70,9 @@ const CartPage = () => {
         return;
       }
 
+      // ✅ Fixed API call
       const response = await axios.post(
-        '${process.env.REACT_APP_API_URL}/api/cart/remove',
+        `${process.env.REACT_APP_API_URL}/api/cart/remove`,
         { userId, productId },
         { headers: { "Content-Type": "application/json" } }
       );
@@ -96,13 +96,15 @@ const CartPage = () => {
 
       const { userId } = jwtDecode(token);
 
-      const response = await axios.put('${process.env.REACT_APP_API_URL}/api/cart/update'
-,
- {
-        userId,
-        productId,
-        quantity: newQuantity,
-      });
+      // ✅ Fixed API call
+      const response = await axios.put(
+        `${process.env.REACT_APP_API_URL}/api/cart/update`,
+        {
+          userId,
+          productId,
+          quantity: newQuantity,
+        }
+      );
 
       console.log("✅ Quantity Updated Response:", response.data);
 
@@ -133,7 +135,7 @@ const CartPage = () => {
                   <p className="price">Price: ₹{item.price || "N/A"}</p>
 
                   {/* Quantity Controls */}
-                  {/* <div className="quantity-controls">
+                  <div className="quantity-controls">
                     <button onClick={() => updateQuantity(item.productId, item.quantity - 1)}>
                       <FaMinus />
                     </button>
@@ -141,7 +143,7 @@ const CartPage = () => {
                     <button onClick={() => updateQuantity(item.productId, item.quantity + 1)}>
                       <FaPlus />
                     </button>
-                  </div> */}
+                  </div>
 
                   <button className="remove-btn" onClick={() => handleRemoveFromCart(item.productId)}>
                     <FaTrash /> Remove
