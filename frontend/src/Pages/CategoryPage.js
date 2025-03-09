@@ -6,8 +6,8 @@ import jwtDecode from "jwt-decode";
 
 const CategoryPage = () => {
   const { category } = useParams();
-  const API_URL = process.env.REACT_APP_API_URL || "https://your-backend-url.com"; 
-  const [products, setProducts] = useState([]);
+  const API_URL = "https://flipkart-clone-iq8c.onrender.com";
+ const [products, setProducts] = useState([]);
 
   useEffect(() => {
     if (!category) return;
