@@ -2,9 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import "./CategoryPage.css";
-import { jwtDecode } from "jwt-decode";  // ✅ For latest versions
-
- 
+import jwtDecode from "jwt-decode"; 
 
 const CategoryPage = () => {
   const { category } = useParams();
