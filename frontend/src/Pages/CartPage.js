@@ -16,19 +16,19 @@ const CartPage = () => {
         console.error("❌ No token found!");
         return;
       }
-
+  
       const decodedToken = jwtDecode(token);
       const userId = decodedToken?.userId;
       if (!userId) {
         console.error("❌ No userId found in token!");
         return;
       }
-
-      const response = await axios.get('${process.env.REACT_APP_API_URL}/api/cart/${userId}');
-
+  
+      // ✅ Corrected string interpolation
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/cart/${userId}`);
+  
       console.log("🛒 API Response:", response.data);
-
-      // ✅ Handle different response formats
+  
       if (Array.isArray(response.data)) {
         setCartItems(response.data);
       } else if (response.data.cart && Array.isArray(response.data.cart.products)) {
@@ -41,7 +41,8 @@ const CartPage = () => {
       console.error("❌ Error fetching cart items:", error.response?.data || error.message);
     }
   };
-
+  
+  
   // 📌 Fetch cart items on component mount
   useEffect(() => {
     fetchCartItems();
